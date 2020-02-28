@@ -30,15 +30,18 @@ describe("About Applying What We Have Learnt", function() {
         }
     }
 
-    expect(productsICanEat.length).toBe(FILL_ME_IN);
+    expect(productsICanEat.length).toBe(1);
   });
 
   it("given I'm allergic to nuts and hate mushrooms, it should find a pizza I can eat (functional)", function () {
       var productsICanEat = [];
-
-      /* solve using filter() & all() / any() */
-
-      expect(productsICanEat.length).toBe(FILL_ME_IN);
+ 
+      //solve using filter() & all() / any() 
+     productsICanEat.push(..._.filter(products, product =>
+      _.all( product.ingredients, ingredient => 
+        ingredient !== 'mushrooms' && product.containsNuts === false) 
+    ));
+      expect(productsICanEat.length).toBe(1);
   });
 
   /*********************************************************************************/
@@ -52,13 +55,16 @@ describe("About Applying What We Have Learnt", function() {
       }
     }
     
-    expect(sum).toBe(FILL_ME_IN);
+    expect(sum).toBe(233168);
   });
 
   it("should add all the natural numbers below 1000 that are multiples of 3 or 5 (functional)", function () {
-    var sum = FILL_ME_IN;    /* try chaining range() and reduce() */
-
-    expect(233168).toBe(FILL_ME_IN);
+    var naturals = _.range(1000).filter(int => int % 3 === 0 || int % 5 === 0);
+    var sum = _(naturals).reduce( function(sum, int) {
+        return sum + int;
+      }, 0);    //try chaining range() and reduce() 
+    expect(233168).toBe(sum);
+    
   });
 
   /*********************************************************************************/
@@ -71,15 +77,32 @@ describe("About Applying What We Have Learnt", function() {
         }
     }
 
-    expect(ingredientCount['mushrooms']).toBe(FILL_ME_IN);
+    expect(ingredientCount['mushrooms']).toBe(2);
+    
   });
-
+/** 
+  beforeEach(function () { 
+    products = [
+       { name: "Sonoma", ingredients: ["artichoke", "sundried tomatoes", "mushrooms"], containsNuts: false },
+       { name: "Pizza Primavera", ingredients: ["roma", "sundried tomatoes", "goats cheese", "rosemary"], containsNuts: false },
+       { name: "South Of The Border", ingredients: ["black beans", "jalapenos", "mushrooms"], containsNuts: false },
+       { name: "Blue Moon", ingredients: ["blue cheese", "garlic", "walnuts"], containsNuts: true },
+       { name: "Taste Of Athens", ingredients: ["spinach", "kalamata olives", "sesame seeds"], containsNuts: true }
+    ];
+  });
+*/
   it("should count the ingredient occurrence (functional)", function () {
     var ingredientCount = { "{ingredient name}": 0 };
 
     /* chain() together map(), flatten() and reduce() */
+    //transform products to array of ALL ingredients
+    var ingredients = _.flatten((products).map(product => product.ingredients));
+    //reduce ingredients array to count
+    _(ingredients).map( function(ingredient) {
+      ingredientCount[ingredient] = (ingredientCount[ingredient] || 0) + 1;
+    });
 
-    expect(ingredientCount['mushrooms']).toBe(FILL_ME_IN);
+    expect(ingredientCount['mushrooms']).toBe(2);
   });
 
   /*********************************************************************************/
